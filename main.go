@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/insabelter/IWS_GO/models"
+	"github.com/insabelter/IWS_GO/handler"
 	"github.com/insabelter/IWS_GO/repository"
 )
 
@@ -20,46 +21,46 @@ type Settings struct {
 
 func main() {
 
-	var feedback = models.Feedback{
-		ID: "1",
-		IP: "test",
-		Author: models.Author{
-			ID:    "1",
-			Email: "test@test.de",
-		},
-		Ratings: models.Ratings{
-			Interesting: models.Rating{
-				ID:      "1",
-				Rating:  5,
-				Comment: "test",
-			},
-			Learning: models.Rating{
-				ID:      "2",
-				Rating:  5,
-				Comment: "test",
-			},
-			Pacing: models.Rating{
-				ID:      "3",
-				Rating:  5,
-				Comment: "test",
-			},
-			ExerciseDifficulty: models.Rating{
-				ID:      "4",
-				Rating:  5,
-				Comment: "test",
-			},
-			Support: models.Rating{
-				ID:      "5",
-				Rating:  5,
-				Comment: "test",
-			},
-			OverallSatisfaction: models.Rating{
-				ID:      "6",
-				Rating:  5,
-				Comment: "test",
-			},
-		},
-	}
+	// var feedback = models.Feedback{
+	// 	ID: "1",
+	// 	IP: "test",
+	// 	Author: models.Author{
+	// 		ID:    "1",
+	// 		Email: "test@test.de",
+	// 	},
+	// 	Ratings: models.Ratings{
+	// 		Interesting: models.Rating{
+	// 			ID:      "1",
+	// 			Rating:  5,
+	// 			Comment: "test",
+	// 		},
+	// 		Learning: models.Rating{
+	// 			ID:      "2",
+	// 			Rating:  5,
+	// 			Comment: "test",
+	// 		},
+	// 		Pacing: models.Rating{
+	// 			ID:      "3",
+	// 			Rating:  5,
+	// 			Comment: "test",
+	// 		},
+	// 		ExerciseDifficulty: models.Rating{
+	// 			ID:      "4",
+	// 			Rating:  5,
+	// 			Comment: "test",
+	// 		},
+	// 		Support: models.Rating{
+	// 			ID:      "5",
+	// 			Rating:  5,
+	// 			Comment: "test",
+	// 		},
+	// 		OverallSatisfaction: models.Rating{
+	// 			ID:      "6",
+	// 			Rating:  5,
+	// 			Comment: "test",
+	// 		},
+	// 	},
+	// }
 
 	// Read Connection String from connection.json
 	var settings, jsonErr = readSettings()
@@ -70,7 +71,7 @@ func main() {
 		fmt.Println("connection-string:" + settings.DbConnectionString)
 
 		// Connecting to ATLAS cluster
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 		defer cancel()
 		client, err := mongo.Connect(ctx, options.Client().ApplyURI(
 			settings.DbConnectionString,
@@ -94,7 +95,8 @@ func main() {
 		// create a repository
 		repository := repository.NewRepository(client.Database("FeedbackDB"))
 
-		repository.CreateFeedback(ctx, feedback)
+		fmt.Printf("Server started on port 3000...\n")
+		http.ListenAndServe(":3000", handler.NewRouter(ctx, repository))
 	}
 }
 

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -12,7 +13,7 @@ import (
 )
 
 var (
-	ErrFeedbackNotFound = errors.New("user not found")
+	ErrFeedbackNotFound = errors.New("feedback not found")
 )
 
 type repository struct {
@@ -27,7 +28,7 @@ func (r repository) GetFeedback(ctx context.Context, ID string) (models.Feedback
 	var out models.Feedback
 	err := r.db.
 		Collection("feedback").
-		FindOne(ctx, bson.M{"ID": ID}).
+		FindOne(ctx, bson.M{"id": ID}).
 		Decode(&out)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
@@ -45,14 +46,15 @@ func (r repository) CreateFeedback(ctx context.Context, feedback models.Feedback
 	if err != nil {
 		return models.Feedback{}, err
 	}
-	feedback.ID = out.InsertedID.(primitive.ObjectID).String()
+	insertedID := out.InsertedID.(primitive.ObjectID).String()
+	fmt.Println(insertedID)
 	return feedback, nil
 }
 
 func (r repository) DeleteFeedback(ctx context.Context, ID string) error {
 	out, err := r.db.
 		Collection("feedback").
-		DeleteOne(ctx, bson.M{"ID": ID})
+		DeleteOne(ctx, bson.M{"id": ID})
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,11 @@ module github.com/insabelter/IWS_GO
 
 go 1.21.5
 
-require go.mongodb.org/mongo-driver v1.13.1
+require (
+	bitbucket.org/rwirdemann/rest-apis-go v0.0.0-20180212093209-ff18a44c6bda
+	github.com/gorilla/mux v1.8.1
+	go.mongodb.org/mongo-driver v1.13.1
+)
 
 require (
 	github.com/golang/snappy v0.0.1 // indirect
