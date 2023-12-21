@@ -3,10 +3,8 @@ package repository
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/insabelter/IWS_GO/models"
@@ -22,6 +20,28 @@ type repository struct {
 
 func NewRepository(db *mongo.Database) Repository {
 	return &repository{db: db}
+}
+
+func (r repository) GetAllFeedbacks(ctx context.Context) ([]models.Feedback, error) {
+	var out []models.Feedback
+	cursor, err := r.db.
+		Collection("feedback").
+		Find(ctx, bson.M{})
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return []models.Feedback{}, ErrFeedbackNotFound
+		}
+		return []models.Feedback{}, err
+	}
+	defer cursor.Close(ctx)
+	err = cursor.All(ctx, &out)
+	if err != nil {
+		return []models.Feedback{}, err
+	}
+	if out == nil {
+		return []models.Feedback{}, nil
+	}
+	return out, nil
 }
 
 func (r repository) GetFeedback(ctx context.Context, ID string) (models.Feedback, error) {
@@ -40,14 +60,12 @@ func (r repository) GetFeedback(ctx context.Context, ID string) (models.Feedback
 }
 
 func (r repository) CreateFeedback(ctx context.Context, feedback models.Feedback) (models.Feedback, error) {
-	out, err := r.db.
+	_, err := r.db.
 		Collection("feedback").
 		InsertOne(ctx, feedback)
 	if err != nil {
 		return models.Feedback{}, err
 	}
-	insertedID := out.InsertedID.(primitive.ObjectID).String()
-	fmt.Println(insertedID)
 	return feedback, nil
 }
 

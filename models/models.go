@@ -1,7 +1,6 @@
 package models
 
 type Rating struct {
-	ID      string
 	Rating  int
 	Comment string
 }
@@ -16,13 +15,12 @@ type Ratings struct {
 }
 
 type Author struct {
-	ID    string
+	Name  string
 	Email string
 }
 
 type Feedback struct {
 	ID      string
-	IP      string
 	Author  Author
 	Ratings Ratings
 }
