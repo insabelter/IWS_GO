@@ -244,3 +244,12 @@ func MakeAverageSupportHandler(ctx context.Context, repository repository.Reposi
 
 	}
 }
+
+func MakePingHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//enableCors(&w)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "pong")
+
+	}
+}
