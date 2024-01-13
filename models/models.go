@@ -1,26 +1,27 @@
 package models
 
 type Rating struct {
-	Rating  int
-	Comment string
+	Rating  int    `json:"rating"`
+	Comment string `json:"comment"`
 }
 
+// TODO: json
 type Ratings struct {
-	Interesting         Rating
-	Learning            Rating
-	Pacing              Rating
-	ExerciseDifficulty  Rating
-	Support             Rating
-	OverallSatisfaction Rating
+	Interesting         Rating `json:"interesting"`
+	Learning            Rating `json:"learning"`
+	Pacing              Rating `json:"pacing"`
+	ExerciseDifficulty  Rating `json:"exercise_difficulty"`
+	Support             Rating `json:"support"`
+	OverallSatisfaction Rating `json:"overall_satisfaction"`
 }
 
 type Author struct {
-	Name  string
-	Email string
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type Feedback struct {
-	ID      string
-	Author  Author
-	Ratings Ratings
+	ID      string  `json:"id"`
+	Author  Author  `json:"author"`
+	Ratings Ratings `json:"ratings"`
 }
