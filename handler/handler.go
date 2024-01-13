@@ -15,14 +15,8 @@ import (
 	"github.com/insabelter/IWS_GO/repository"
 )
 
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-}
-
 func MakeGetFeedbacksHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		enableCors(&w)
-
 		if feedbacks, err := repository.GetAllFeedbacks(ctx); err == nil {
 			if json, err := json.Marshal(feedbacks); err == nil {
 				w.Header().Set("Content-Type", "application/json")
@@ -40,8 +34,6 @@ func MakeGetFeedbacksHandler(ctx context.Context, repository repository.Reposito
 
 func MakeGetFeedbackHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		enableCors(&w)
-
 		id := mux.Vars(r)["id"]
 		if feedback, err := repository.GetFeedback(ctx, id); err == nil {
 			if json, err := json.Marshal(feedback); err == nil {
@@ -59,8 +51,6 @@ func MakeGetFeedbackHandler(ctx context.Context, repository repository.Repositor
 
 func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		enableCors(&w)
-
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			fmt.Println(err)
@@ -100,8 +90,6 @@ func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repositor
 
 func MakeDeleteFeedbackHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		enableCors(&w)
-
 		id := mux.Vars(r)["id"]
 		if repository.DeleteFeedback(ctx, id) == nil {
 			w.WriteHeader(http.StatusNoContent)
@@ -114,8 +102,6 @@ func MakeDeleteFeedbackHandler(ctx context.Context, repository repository.Reposi
 // this route uses goroutines and channels
 func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		enableCors(&w)
-
 		//get all feedback documents
 		feedbacks, err := repository.GetAllFeedbacks(ctx)
 		if err != nil {
@@ -171,8 +157,6 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 // this route uses goroutines, shared memory and WaitGroups
 func MakeAverageSupportHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		enableCors(&w)
-
 		//get all feedback documents
 		feedbacks, err := repository.GetAllFeedbacks(ctx)
 		if err != nil {
@@ -247,9 +231,7 @@ func MakeAverageSupportHandler(ctx context.Context, repository repository.Reposi
 
 func MakePingHandler(ctx context.Context, repository repository.Repository) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//enableCors(&w)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "pong")
-
 	}
 }
