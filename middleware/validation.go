@@ -7,10 +7,13 @@ import (
 	"github.com/insabelter/IWS_GO/models"
 )
 
+// custom error type for validation errors
 type ValidationError struct {
 	Message string
 }
 
+// implement the error interface for the custom validation error type
+// returns the custom error message and marks it as a validation error
 func (m *ValidationError) Error() string {
 	return fmt.Sprintf("Validation error: %s", m.Message)
 }
@@ -23,7 +26,7 @@ func ValidateFeedback(feedback models.Feedback) error {
 		}
 	}
 
-	// Create array of ratings to validate all at once
+	// Create list of ratings to validate all at once
 	ratings := []models.Rating{
 		feedback.Ratings.Interesting,
 		feedback.Ratings.Learning,
@@ -34,6 +37,7 @@ func ValidateFeedback(feedback models.Feedback) error {
 	}
 
 	// Validate list of ratings
+	// If one rating is invalid, returns error
 	if err := validateRatings(ratings); err != nil {
 		return err
 	}

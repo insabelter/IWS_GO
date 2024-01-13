@@ -9,14 +9,17 @@ import (
 
 func NewRouter(ctx context.Context, repository repository.Repository) *mux.Router {
 	r := mux.NewRouter()
+
+	// Health check
 	r.HandleFunc("/ping", MakePingHandler(ctx, repository)).Methods("GET")
-	//CRUD
+
+	// CRUD
 	r.HandleFunc("/feedback", MakeGetFeedbacksHandler(ctx, repository)).Methods("GET")
 	r.HandleFunc("/feedback", MakeAddFeedbackHandler(ctx, repository)).Methods("POST")
 	r.HandleFunc("/feedback/{id}", MakeGetFeedbackHandler(ctx, repository)).Methods("GET")
 	r.HandleFunc("/feedback/{id}", MakeDeleteFeedbackHandler(ctx, repository)).Methods("DELETE")
 
-	//Analytics
+	// Analytics
 	r.HandleFunc("/analytics/average/overallsatisfaction", MakeAverageOverallSatisfactionHandler(ctx, repository)).Methods("GET")
 	r.HandleFunc("/analytics/average/support", MakeAverageSupportHandler(ctx, repository)).Methods("GET")
 

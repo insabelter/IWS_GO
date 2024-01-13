@@ -5,7 +5,6 @@ type Rating struct {
 	Comment string `json:"comment"`
 }
 
-// TODO: json
 type Ratings struct {
 	Interesting         Rating `json:"interesting"`
 	Learning            Rating `json:"learning"`
