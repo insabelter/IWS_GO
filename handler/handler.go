@@ -103,6 +103,7 @@ func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repositor
 			// transform the created feedback into json
 			if json, err := json.Marshal(createdFeedback); err == nil {
 				// successfully send the new feedback as json response
+				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusCreated)
 				fmt.Fprintf(w, string(json))
 			} else {
