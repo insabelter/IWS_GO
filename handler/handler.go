@@ -77,8 +77,8 @@ func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repositor
 		feedback.ID = uuid.New().String()
 
 		if err = middleware.ValidateFeedback(feedback); err != nil {
-			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, err.Error())
 			return
 		}
 
