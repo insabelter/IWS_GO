@@ -14,15 +14,15 @@ var (
 	ErrFeedbackNotFound = errors.New("feedback not found")
 )
 
-type repository struct {
+type MongoDBRepository struct {
 	db *mongo.Database
 }
 
-func NewRepository(db *mongo.Database) Repository {
-	return &repository{db: db}
+func NewMongoDBRepository(db *mongo.Database) Repository {
+	return &MongoDBRepository{db: db}
 }
 
-func (r repository) GetAllFeedbacks(ctx context.Context) ([]models.Feedback, error) {
+func (r MongoDBRepository) GetAllFeedbacks(ctx context.Context) ([]models.Feedback, error) {
 	var out []models.Feedback
 	cursor, err := r.db.
 		Collection("feedback").
@@ -44,7 +44,7 @@ func (r repository) GetAllFeedbacks(ctx context.Context) ([]models.Feedback, err
 	return out, nil
 }
 
-func (r repository) GetFeedback(ctx context.Context, ID string) (models.Feedback, error) {
+func (r MongoDBRepository) GetFeedback(ctx context.Context, ID string) (models.Feedback, error) {
 	var out models.Feedback
 	err := r.db.
 		Collection("feedback").
@@ -59,7 +59,7 @@ func (r repository) GetFeedback(ctx context.Context, ID string) (models.Feedback
 	return out, nil
 }
 
-func (r repository) CreateFeedback(ctx context.Context, feedback models.Feedback) (models.Feedback, error) {
+func (r MongoDBRepository) CreateFeedback(ctx context.Context, feedback models.Feedback) (models.Feedback, error) {
 	_, err := r.db.
 		Collection("feedback").
 		InsertOne(ctx, feedback)
@@ -69,7 +69,7 @@ func (r repository) CreateFeedback(ctx context.Context, feedback models.Feedback
 	return feedback, nil
 }
 
-func (r repository) DeleteFeedback(ctx context.Context, ID string) error {
+func (r MongoDBRepository) DeleteFeedback(ctx context.Context, ID string) error {
 	out, err := r.db.
 		Collection("feedback").
 		DeleteOne(ctx, bson.M{"id": ID})
