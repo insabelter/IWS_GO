@@ -34,24 +34,26 @@ func main() {
 			settings.DbConnectionString,
 		))
 
+		// Disconnect from the client when the program ends
 		defer func() {
 			if err = client.Disconnect(ctx); err != nil {
 				panic(err)
 			}
 		}()
 
+		// Check the connection
 		err = client.Ping(ctx, nil)
-
 		if err != nil {
-			fmt.Println("There was a problem connecting to your Atlas cluster. Check that the URI includes a valid username and password, and that your IP address has been added to the access list. Error: ")
+			fmt.Println("There was a problem connecting to your Atlas cluster.")
 			panic(err)
 		}
 		fmt.Println("Connected to MongoDB!")
 
-		// create a repository
-		repository := repository.NewRepository(client.Database("FeedbackDB"))
+		// Create a MongoDB repository
+		repository := repository.NewMongoDBRepository(client.Database("FeedbackDB"))
 
-		fmt.Println("Server started on port 3000...\n")
+		// Start the server
+		fmt.Println("Server started on port 3000...")
 		http.ListenAndServe(":3000", handler.NewRouter(ctx, repository))
 	}
 }
