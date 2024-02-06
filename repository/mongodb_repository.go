@@ -24,6 +24,7 @@ func NewMongoDBRepository(db *mongo.Database) Repository {
 
 func (r MongoDBRepository) GetAllFeedbacks(ctx context.Context) ([]models.Feedback, error) {
 	var out []models.Feedback
+	// Create cursor to iterate through the documents
 	cursor, err := r.db.
 		Collection("feedback").
 		Find(ctx, bson.M{})
@@ -33,11 +34,14 @@ func (r MongoDBRepository) GetAllFeedbacks(ctx context.Context) ([]models.Feedba
 		}
 		return []models.Feedback{}, err
 	}
+	// Close the cursor when the function ends
 	defer cursor.Close(ctx)
+	// Get all the documents from the cursor and decode them into the out variable
 	err = cursor.All(ctx, &out)
 	if err != nil {
 		return []models.Feedback{}, err
 	}
+	// If there are no documents, return an empty array
 	if out == nil {
 		return []models.Feedback{}, nil
 	}
