@@ -5,7 +5,7 @@ import (
 	"fmt"
 	//"io"
 	"net/http"
-	//middleware "github.com/insabelter/IWS_GO/middelware"
+	//validation "github.com/insabelter/IWS_GO/validation"
 	//"github.com/insabelter/IWS_GO/models"
 )
 
@@ -24,7 +24,6 @@ func MakePingHandler() func(w http.ResponseWriter, r *http.Request) {
 //Versuche den Body des http.Request mithilfe io.ReadAll auszulesen
 
 //Versuchen den JSON Body in ein Rating umzuwandeln.
-
 
 // Drucke das empfangene Rating
 
