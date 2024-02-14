@@ -1,0 +1,205 @@
+GET ALL FEEDBACKS ______________________________________________________
+
+
+curl --request GET \
+  --url http://localhost:3000/feedback
+
+
+GET FEEDBACK ___________________________________________________________
+
+
+curl --request GET \
+  --url http://localhost:3000/feedback/f0e2d40d-e46b-45fb-b71d-7bb969716835
+
+
+PING _____________________________________________________________________
+
+
+curl --request GET \
+  --url http://localhost:3000/ping
+
+
+POST FEEDBACK __________________________________________________________
+
+
+curl --request POST \
+  --url http://localhost:3000/feedback \
+  --data '{
+  "author": {
+    "name": "Max Mustermann",
+    "email": "max@mustermann.com"
+  },
+  "ratings": {
+    "interesting": {
+      "rating": 9,
+      "comment": "Cool topic."
+    },
+    "learning": {
+      "rating": 4,
+      "comment": "Knew Go before, so not that much new stuff :("
+    },
+    "pacing": {
+      "rating": 7,
+      "comment": "Great pacing!"
+    },
+    "exercise_difficulty": {
+      "rating": 3,
+      "comment": "All too easy ..."
+    },
+    "support": {
+      "rating": 8,
+      "comment": "Nice smile :)"
+    },
+    "overall_satisfaction": {
+      "rating": 7,
+      "comment": "Good Workshop!"
+    }
+  }
+}'
+
+
+POST FEEDBACK INVALID EMAIL ______________________________________________
+
+
+curl --request POST \
+  --url http://localhost:3000/feedback \
+  --data '{
+  "author": {
+    "name": "Max Mustermann",
+    "email": "max-mustermann.com"
+  },
+  "ratings": {
+    "interesting": {
+      "rating": 9,
+      "comment": "Cool topic."
+    },
+    "learning": {
+      "rating": 4,
+      "comment": "Knew Go before, so not that much new stuff :("
+    },
+    "pacing": {
+      "rating": 7,
+      "comment": "Great pacing!"
+    },
+    "exercise_difficulty": {
+      "rating": 3,
+      "comment": "All too easy ..."
+    },
+    "support": {
+      "rating": 8,
+      "comment": "Nice smile :)"
+    },
+    "overall_satisfaction": {
+      "rating": 7,
+      "comment": "Good Workshop!"
+    }
+  }
+}'
+
+
+POST FEEDBACK INVALID RATING - NUMBER TOO HIGH __________________________
+
+
+curl --request POST \
+  --url http://localhost:3000/feedback \
+  --data '{
+  "author": {
+    "name": "Max Mustermann",
+    "email": "max@mustermann.com"
+  },
+  "ratings": {
+    "interesting": {
+      "rating": 9,
+      "comment": "Cool topic."
+    },
+    "learning": {
+      "rating": 2,
+      "comment": "Knew Go before, so not that much new stuff :("
+    },
+    "pacing": {
+      "rating": 7,
+      "comment": "Great pacing!"
+    },
+    "exercise_difficulty": {
+      "rating": 3,
+      "comment": "All too easy ..."
+    },
+    "support": {
+      "rating": 12,
+      "comment": "Nice smile :)"
+    },
+    "overall_satisfaction": {
+      "rating": 7,
+      "comment": "Good Workshop!"
+    }
+  }
+}'
+
+
+POST FEEDBACK INVALID RATING - TOO LONG __________________________________
+
+
+curl --request POST \
+  --url http://localhost:3000/feedback \
+  --data '{
+  "author": {
+    "name": "Max Mustermann",
+    "email": "max@mustermann.com"
+  },
+  "ratings": {
+    "interesting": {
+      "rating": 9,
+      "comment": "Cool topic."
+    },
+    "learning": {
+      "rating": 4,
+      "comment": "Knew Go before, so not that much new stuff :("
+    },
+    "pacing": {
+      "rating": 7,
+      "comment": "Great pacing!"
+    },
+    "exercise_difficulty": {
+      "rating": 3,
+      "comment": "All too easy ..."
+    },
+    "support": {
+      "rating": 8,
+      "comment": "TooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooongTooooLoooooong"
+    },
+    "overall_satisfaction": {
+      "rating": 7,
+      "comment": "Good Workshop!"
+    }
+  }
+}'
+
+
+DELETE FEEDBACK _________________________________________________________
+
+
+curl --request DELETE \
+  --url http://localhost:3000/feedback/1
+
+
+AVERAGE RATING SUPPORT _________________________________________________
+
+
+curl --request GET \
+  --url http://localhost:3000/analytics/average/support
+
+
+AVERAGE RATING OVERALL SATISFACTION ____________________________________
+
+
+curl --request GET \
+  --url http://localhost:3000/analytics/average/overallsatisfaction
+
+
+POST RATING ______________________________________________________________
+
+
+curl --request POST \
+  --url http://localhost:3000/rating \
+  --data '{"Rating":5, "Comment":"Test Rating"}'
+
