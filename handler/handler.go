@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/insabelter/IWS_GO/middleware"
 	"github.com/insabelter/IWS_GO/models"
 	"github.com/insabelter/IWS_GO/repository"
+	"github.com/insabelter/IWS_GO/validation"
 )
 
 // route to get all feedbacks as a list
@@ -65,7 +65,7 @@ func MakeGetFeedbackHandler(ctx context.Context, repository repository.Repositor
 }
 
 // route to add a new feedback
-// uses the validation middleware to validate the new feedback
+// uses this function to validate the new feedback
 func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// read the request body
@@ -87,7 +87,7 @@ func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repositor
 		}
 
 		// validate the feedback
-		if err = middleware.ValidateFeedback(feedback); err != nil {
+		if err = validation.ValidateFeedback(feedback); err != nil {
 			// error response if the validation fails
 			w.WriteHeader(http.StatusBadRequest)
 			// the custom validation error is added to the response
