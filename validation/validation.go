@@ -36,26 +36,26 @@ func ValidateFeedback(feedback models.Feedback) error {
 		feedback.Ratings.OverallSatisfaction,
 	}
 
-	// Validate list of ratings
+	// Iterate list of ratings
 	// If one rating is invalid, returns error
-	if err := validateRatings(ratings); err != nil {
-		return err
+	for _, rating := range ratings {
+		if err := validateRatings(rating); err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
-func validateRatings(ratings []models.Rating) error {
-	for _, rating := range ratings {
-		// Check ratings number between 1 and 10
-		if rating.Rating < 1 || rating.Rating > 10 {
-			return &ValidationError{
-				Message: "Rating must be between 1 and 10",
-			}
-			// Check comment length max 2000 characters
-		} else if len(rating.Comment) > 2000 {
-			return &ValidationError{
-				Message: "Comment can contain a maximum of 2000 characters",
-			}
+func validateRatings(rating models.Rating) error {
+	// Check ratings number between 1 and 10
+	if rating.Rating < 1 || rating.Rating > 10 {
+		return &ValidationError{
+			Message: "Rating must be between 1 and 10",
+		}
+		// Check comment length max 2000 characters
+	} else if len(rating.Comment) > 2000 {
+		return &ValidationError{
+			Message: "Comment can contain a maximum of 2000 characters",
 		}
 	}
 	return nil
