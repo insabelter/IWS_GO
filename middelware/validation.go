@@ -2,8 +2,7 @@ package middleware
 
 import (
 	"fmt"
-
-	"github.com/insabelter/IWS_GO/models"
+	//"github.com/insabelter/IWS_GO/models"
 )
 
 // custom error type for validation errors
@@ -17,20 +16,5 @@ func (m *ValidationError) Error() string {
 	return fmt.Sprintf("Validation error: %s", m.Message)
 }
 
-
-func validateRating(rating models.Rating) error {
-	
-		// Check ratings number between 1 and 10
-		if rating.Rating < 1 || rating.Rating > 10 {
-			return &ValidationError{
-				Message: "Rating must be between 1 and 10",
-			}
-			// Check comment length max 2000 characters
-		} else if len(rating.Comment) > 2000 {
-			return &ValidationError{
-				Message: "Comment can contain a maximum of 2000 characters",
-			}
-		}
-	
-	return nil
-}
+//Schreibe eine Funktion die einen ValidationError zurückgibt, wenn das Rating nicht zwischen 1-10 liegt oder der Kommentar mehr als 2000 Zeichen hat sonst gebe nil zurück
+//Binde danach die Funktion im Handler, welcher das Rating empfängt ein.

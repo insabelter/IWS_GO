@@ -1,13 +1,12 @@
 package handler
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
-	"io"
+	//"io"
 	"net/http"
-
-	"github.com/insabelter/IWS_GO/models"
-	"github.com/insabelter/IWS_GO/middelware"
+	//middleware "github.com/insabelter/IWS_GO/middelware"
+	//"github.com/insabelter/IWS_GO/models"
 )
 
 // route to test if the server is running -> health check
@@ -18,42 +17,15 @@ func MakePingHandler() func(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
-func MakeRatingHandler() func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
 
-		// Dekodiere JSON-Daten aus dem Anfragekörper
-		var receivedRating models.Rating
+//Schreibe eine  Funktion, welche aus dem http.Request das Rating liest
 
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			// error response if the request body can't be read
-			fmt.Println(err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		
-		err = json.Unmarshal(body, &receivedRating)
-		if err != nil {
-			http.Error(w, "Failed to decode JSON", http.StatusBadRequest)
-			return
-		}
+// Dekodiere JSON-Daten aus dem Anfragekörper
+//Versuche den Body des http.Request mithilfe io.ReadAll auszulesen
 
-		if err = middleware.validateRating(receivedRating); err != nil {
-			// error response if the validation fails
-			w.WriteHeader(http.StatusBadRequest)
-			// the custom validation error is added to the response
-			fmt.Fprintf(w, err.Error())
-			return
-		}
+//Versuchen den JSON Body in ein Rating umzuwandeln.
 
 
+// Drucke das empfangene Rating
 
-		// Drucke das empfangene Rating
-		fmt.Printf("Received Rating: %+v\n", receivedRating)
-
-		// Antworte mit einer Bestätigung
-		response := fmt.Sprintf("Rating received successfully. Rating: %+v", receivedRating)
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(response))
-	}
-}
+// Antworte mit einer Bestätigung, welche das Rating zurückgibt.
