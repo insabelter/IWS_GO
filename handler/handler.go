@@ -150,24 +150,16 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 			return
 		}
 
-		//initalize channel (unbuffered)
-		cOverallSatisfaction := make(chan int)
-
-		//start a goroutine for each feedback document
-		for _, feedback := range feedbacks {
-			go func(feedback models.Feedback) {
-				//send the overall satisfaction score to the channel
-				cOverallSatisfaction <- readOverallSatisfactionRating(feedback)
-			}(feedback)
-		}
-
 		sum := 0
 
-		//receive the overall satisfaction feedback scores for each feedback document and add them up
-		for i := 0; i < len(feedbacks); i++ {
-			overallSatisfactionScore := <-cOverallSatisfaction
-			sum += overallSatisfactionScore
-		}
+		/*
+			-------------------------------------------
+			Add Code to sum up the support ratings here
+			Use goroutines, channels and waitgroups
+			use the readAverageSatisfactionRating function to read
+			an average satisfaction rating from a feedback
+			-------------------------------------------
+		*/
 
 		//calculate the average
 		average := float64(sum) / float64(len(feedbacks))
@@ -222,34 +214,14 @@ func MakeAverageSupportHandler(ctx context.Context, repository repository.Reposi
 			Mutex: sync.Mutex{},
 		}
 
-		wg := sync.WaitGroup{}
-
-		//register the number of goroutines to wait for (one goroutine per feedback document)
-		wg.Add(len(feedbacks))
-
-		//start a goroutine for each feedback document
-		for _, feedback := range feedbacks {
-			go func(sum *Sum, wg *sync.WaitGroup, feedback models.Feedback) {
-				//register the goroutine as finished when it's done
-				defer wg.Done()
-
-				//fmt.Println("locking...")
-				sum.Mutex.Lock()
-				//fmt.Println("locked")
-
-				sum.Value += readSupportRating(feedback)
-
-				//uncomment this line and the prints to showcase that the mutex prevents multiple threads from accessing the shared memory at the same time
-				//time.Sleep(time.Second)
-
-				//fmt.Println("unlocking...")
-				sum.Mutex.Unlock()
-				//fmt.Println("unlocked")
-			}(&sum, &wg, feedback)
-
-		}
-		//wait for all goroutines to finish
-		wg.Wait()
+		/*
+			-------------------------------------------
+			Add Code to sum up the support ratings here
+			Use goroutines, shared memory and waitgroups
+			use the readSupportRating function to read
+			a support rating from a feedback
+			-------------------------------------------
+		*/
 
 		//calculate the average
 		average := float64(sum.Value) / float64(len(feedbacks))
