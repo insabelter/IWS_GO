@@ -18,13 +18,12 @@ func MakePingHandler() func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Schreibe eine  Funktion, welche aus dem http.Request das Rating liest
+// Schreibe hier den Make FeedbackHandler
 
-// Dekodiere JSON-Daten aus dem Anfragekörper
-//Versuche den Body des http.Request mithilfe io.ReadAll auszulesen
 
-//Versuchen den JSON Body in ein Rating umzuwandeln.
-
-// Drucke das empfangene Rating
-
-// Antworte mit einer Bestätigung, welche das Rating zurückgibt.
+		//Mithilfe io.ReadAll() kannst du den Body speichern
+		//Was soll passieren wenn dies nicht möglich ist? 
+		//Schaut euch dazu die Rückgabewerte der Methode io.ReadAll()
+		
+		// Antworte mit einer Bestätigung. Diese soll das Feedback zurück geben
+		// Der body ist von Typ byte[]. string() kann helfen

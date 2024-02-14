@@ -7,6 +7,6 @@ import (
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", MakePingHandler()).Methods("GET")
-	//Erstelle eine POST route für /rating
+	//Erstelle eine Route für /rating
 	return r
 }
