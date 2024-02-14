@@ -54,7 +54,7 @@ func MakeGetFeedbackHandler(ctx context.Context, repository repository.Repositor
 // 2. TODO: Implement the add feedback handler
 
 // route to add a new feedback
-// uses the validation middleware to validate the new feedback
+// uses the validation package to validate the new feedback
 func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// read the request body (+ check for error)
@@ -67,7 +67,7 @@ func MakeAddFeedbackHandler(ctx context.Context, repository repository.Repositor
 
 		// error response if the json tranformation fails
 
-		// validate the feedback using the ValidateFeedback function from the middleware (+ check for error)
+		// validate the feedback using the ValidateFeedback function from the validation package (+ check for error)
 
 		// error response if the validation fails (custom error message should be added to the response)
 
