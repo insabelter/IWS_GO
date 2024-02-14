@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -156,7 +157,7 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 		for _, feedback := range feedbacks {
 			go func(feedback models.Feedback) {
 				//send the overall satisfaction score to the channel
-				cOverallSatisfaction <- feedback.Ratings.OverallSatisfaction.Rating
+				cOverallSatisfaction <- readOverallSatisfactionRating(feedback)
 			}(feedback)
 		}
 
@@ -191,6 +192,12 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 		fmt.Fprintf(w, string(json))
 
 	}
+}
+
+func readOverallSatisfactionRating(feedback models.Feedback) int {
+	time.Sleep(time.Second)
+	fmt.Println("reading overall satisfaction score...")
+	return feedback.Ratings.OverallSatisfaction.Rating
 }
 
 // route to calculate the average of all support feedback scores
@@ -230,7 +237,7 @@ func MakeAverageSupportHandler(ctx context.Context, repository repository.Reposi
 				sum.Mutex.Lock()
 				//fmt.Println("locked")
 
-				sum.Value += feedback.Ratings.Support.Rating
+				sum.Value += readSupportRating(feedback)
 
 				//uncomment this line and the prints to showcase that the mutex prevents multiple threads from accessing the shared memory at the same time
 				//time.Sleep(time.Second)
@@ -267,6 +274,12 @@ func MakeAverageSupportHandler(ctx context.Context, repository repository.Reposi
 		fmt.Fprintf(w, string(json))
 
 	}
+}
+
+func readSupportRating(feedback models.Feedback) int {
+	time.Sleep(time.Second)
+	fmt.Println("reading support score...")
+	return feedback.Ratings.Support.Rating
 }
 
 // route to test if the server is running -> health check
