@@ -151,8 +151,7 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 		}
 		sum := 0
 
-		//initalize channel (unbuffered)
-		cOverallSatisfaction := make(chan int)
+		cOverallSatisfaction := make(chan int) //initalize channel (unbuffered)
 
 		//start a goroutine for each feedback document
 		for _, feedback := range feedbacks {
@@ -162,7 +161,7 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 			}(feedback)
 		}
 
-		//receive the overall satisfaction feedback scores for each feedback document and add them up
+		//receive the overall satisfaction feedback scores for each feedback document and add them
 		for i := 0; i < len(feedbacks); i++ {
 			overallSatisfactionScore := <-cOverallSatisfaction
 			sum += overallSatisfactionScore
