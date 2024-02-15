@@ -28,5 +28,5 @@ func MakePingHandler() func(w http.ResponseWriter, r *http.Request) {
 		// Antworte mit einer Bestätigung. Diese soll das Feedback zurück geben
 		// Der body ist von Typ byte[]. string() kann helfen
 		
-		// Für die Schnellen mithilfe von r.FromValue("key") kannst du HTTP Parameter ausgeben.
-		//Übergebe die Gesamtbewertung und gebe diese aus.
+		// Für die Schnellen mithilfe von r.FromValue("key") kannst du auf HTTP Parameter zugreifen.
+		//Übergebe die Gesamtbewertung als Zahl zwischen 1-10 und gebe diese aus.
