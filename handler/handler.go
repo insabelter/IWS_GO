@@ -149,6 +149,7 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+		sum := 0
 
 		//initalize channel (unbuffered)
 		cOverallSatisfaction := make(chan int)
@@ -160,8 +161,6 @@ func MakeAverageOverallSatisfactionHandler(ctx context.Context, repository repos
 				cOverallSatisfaction <- readOverallSatisfactionRating(feedback)
 			}(feedback)
 		}
-
-		sum := 0
 
 		//receive the overall satisfaction feedback scores for each feedback document and add them up
 		for i := 0; i < len(feedbacks); i++ {
@@ -232,21 +231,13 @@ func MakeAverageSupportHandler(ctx context.Context, repository repository.Reposi
 			go func(sum *Sum, wg *sync.WaitGroup, feedback models.Feedback) {
 				//register the goroutine as finished when it's done
 				defer wg.Done()
-
-				//fmt.Println("locking...")
+				supportRating := readSupportRating(feedback)
 				sum.Mutex.Lock()
-				//fmt.Println("locked")
 
-				sum.Value += readSupportRating(feedback)
+				sum.Value += supportRating
 
-				//uncomment this line and the prints to showcase that the mutex prevents multiple threads from accessing the shared memory at the same time
-				//time.Sleep(time.Second)
-
-				//fmt.Println("unlocking...")
 				sum.Mutex.Unlock()
-				//fmt.Println("unlocked")
 			}(&sum, &wg, feedback)
-
 		}
 		//wait for all goroutines to finish
 		wg.Wait()
